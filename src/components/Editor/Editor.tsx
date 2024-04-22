@@ -1,10 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './Editor.module.css';
-import Prism from 'prismjs';
+import useCodeHighlighter from './useCodeHighlighter';
 import 'prismjs/themes/prism.css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-jsx';
 
 interface EditorProps {
     initialCode: string;
@@ -13,8 +10,8 @@ interface EditorProps {
 
 export default function Editor({ initialCode, onCodeChange }: EditorProps) {
     const [code, setCode] = useState<string>(initialCode);
-    const [highlightedCode, setHighlightedCode] = useState<string>('');
     const [lineNumbers, setLineNumbers] = useState('1');
+    const highlightedCode = useCodeHighlighter(code, 'jsx');
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const preRef = useRef<HTMLPreElement>(null);
@@ -43,10 +40,6 @@ export default function Editor({ initialCode, onCodeChange }: EditorProps) {
         const lineNumberString = Array.from(new Array(lines), (_x, i) => i + 1).join('\n');
         setLineNumbers(lineNumberString);
     };
-
-    useEffect(() => {
-        setHighlightedCode(Prism.highlight(code, Prism.languages.jsx, 'jsx'));
-    }, [code]);
 
     useEffect(() => {
         updateLineNumbers(code);

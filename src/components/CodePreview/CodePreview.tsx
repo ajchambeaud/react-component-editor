@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import styles from './CodePreview.module.css';
+import debounce from 'lodash/debounce';
 
 interface CodePreviewProps {
     code: string;
@@ -28,6 +29,11 @@ const htmlTemplate = `
     </head>
     <body>
         <div id="root"></div>
+        <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.log('Error in code');
+        }
+        </script>
         <script type="text/babel">BABEL_CODE</script>
     </body>
     </html>
@@ -37,19 +43,24 @@ function CodePreview({ code }: CodePreviewProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     useEffect(() => {
-        if (!iframeRef.current) return;
+        const handleUpdateIframe = debounce(() => {
+            if (!iframeRef.current) return;
 
-        const doc = iframeRef.current.contentWindow?.document;
-        if (!doc) return;
+            const doc = iframeRef.current.contentWindow?.document;
+            if (!doc) return;
 
-        let componentCode = code.replace('export default', 'const UserComponent=');
-        componentCode += `const root = ReactDOM.createRoot(document.getElementById('root'));`;
-        componentCode += `root.render(<UserComponent/>);`;
-        const fullCode = htmlTemplate.replace('BABEL_CODE', componentCode);
+            let componentCode = code.replace('export default', 'const UserComponent=');
+            componentCode += `const root = ReactDOM.createRoot(document.getElementById('root'));`;
+            componentCode += `root.render(<UserComponent/>);`;
+            const fullCode = htmlTemplate.replace('BABEL_CODE', componentCode);
 
-        doc.open();
-        doc.write(fullCode);
-        doc.close();
+            doc.open();
+            doc.write(fullCode);
+            doc.close();
+        }, 1000);
+
+        handleUpdateIframe();
+        return () => handleUpdateIframe.cancel();
     }, [code]);
 
     return (
