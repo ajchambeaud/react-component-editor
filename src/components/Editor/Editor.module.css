@@ -1,0 +1,71 @@
+.editorContainer {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    border: 1px solid #b9b5b52e;
+    background-color: #232721;
+}
+
+.editorTextarea,
+.editorPreview {
+    margin: 10px 0px 0px 0px;
+    padding: 0px;
+    position: absolute;
+    top: 0;
+    left: 60px;
+    width: calc(100% - 60px);
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    border: none;
+    white-space: pre;
+}
+
+.editorTextarea {
+    z-index: 2;
+    resize: none;
+    color: transparent;
+    background-color: transparent;
+    caret-color: white;
+}
+
+.editorTextarea:focus {
+    outline: none;
+}
+
+.editorPreview {
+    pointer-events: none;
+    z-index: 1;
+    color: white;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.editorMargin {
+    margin: 10px 0px 0px 0px;
+    padding: 0px 20px 0px 0px;
+    width: 40px;
+    height: 100%;
+    text-align: right;
+    font-size: 16px;
+    line-height: 1.5;
+    border: none;
+    color: #b9b5b52e;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.editorMargin pre {
+    margin: 0px;
+    padding: 0px;
+}
+
+.editorMargin::-webkit-scrollbar {
+    display: none;
+}
