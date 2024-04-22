@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styles from './Editor.module.css';
 import useCodeHighlighter from './useCodeHighlighter';
+import useLineNumbers from './useLineNumbers';
 import 'prismjs/themes/prism.css';
 
 interface EditorProps {
@@ -10,7 +11,7 @@ interface EditorProps {
 
 export default function Editor({ initialCode, onCodeChange }: EditorProps) {
     const [code, setCode] = useState<string>(initialCode);
-    const [lineNumbers, setLineNumbers] = useState('1');
+    const lineNumbers = useLineNumbers(code);
     const highlightedCode = useCodeHighlighter(code, 'jsx');
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -34,16 +35,6 @@ export default function Editor({ initialCode, onCodeChange }: EditorProps) {
         onCodeChange(text);
         handleScroll();
     }
-
-    const updateLineNumbers = (input: string) => {
-        const lines = input.split('\n').length;
-        const lineNumberString = Array.from(new Array(lines), (_x, i) => i + 1).join('\n');
-        setLineNumbers(lineNumberString);
-    };
-
-    useEffect(() => {
-        updateLineNumbers(code);
-    }, [code]);
 
     return (
         <div className={styles.editorContainer}>
