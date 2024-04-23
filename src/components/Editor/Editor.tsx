@@ -28,8 +28,8 @@ export default function Editor({ initialCode, onCodeChange }: EditorProps) {
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let text = event.target.value;
-        if (text[text.length - 1] == "\n") {
-            text += " ";
+        if (text[text.length - 1] == '\n') {
+            text += ' ';
         }
         setCode(text);
         onCodeChange(text);

@@ -12,7 +12,6 @@ export default function Hello() {
 function App() {
   const [code, setCode] = useState<string>(codeTemplate);
 
-  // Handle changes in code from the Editor
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
   };
@@ -25,4 +24,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
